@@ -1,0 +1,86 @@
+# local setup (not generally applicable - bash/sh format)
+
+# following lines commented out by Bruce 2017/03/08 (not needed anymore...?)
+# following lines added by Bruce 2013/06/07 (proxy settings for wget)
+#export http_proxy=142.133.17.203:8080
+#export https_proxy=142.133.17.203:8080
+# END added by Bruce 2013/06/07
+# END commented out by Bruce 2017/03/08
+
+# following lines added by Bruce 2013/08/02 (MWP PC path setup, etc.)
+#append_to_path "$HOME/sw/cygwin/usr/bin"
+# following line modified by Bruce 2017/07/20 (remove version suffix from path)
+append_to_path "/c/sw/emacs/bin"
+alias ec='emacsclientw'
+alias gpg1='gpg --homedir ~/AppData/Roaming/gnupg'
+alias gpgv1='gpg --verify --homedir ~/AppData/Roaming/gnupg'
+alias gpg2='"/c/Program Files (x86)/GNU/GnuPG/gpg2" --homedir ~/AppData/Roaming/gnupg'
+alias gpgv2='"/c/Program Files (x86)/GNU/GnuPG/gpg2" --verify --homedir ~/AppData/Roaming/gnupg'
+#alias more='less -EK' - moved to "local" Windows .bash_login so aliases defined in "centralized"/master .bash_login pick up definition
+# END added by Bruce 2013/08/02
+
+# following lines added by Bruce 2014/07/28-30 (git prompt/completion)
+setup_for_git ()
+{
+    #  #PS1="\[\033]0;\h(\u)${curview}:\w\007\033[32m\]\u($group)@\h${curview}:\[\033[33m\w \033[36m[\!]\033[0m\]
+    #  PS1="\[\033]0;\h(\u):$(__git_ps1 "(%s)"):\w\007\033[32m\]\u@\h$(__git_ps1 "(%s)"):\[\033[33m\w \033[36m[\!]\033[0m\]
+    #"
+    #}
+    #export PS1='\[\033]0;\u@\h \W$(declare -F __git_ps1 &>/dev/null && __git_ps1 " (%s)")
+    #'
+    #PS1='\[\033]0;\u@\h:\w\007\033[31m\]\u@\h:\[\033[35m\w \033[31m[\!]\W$(declare -F __git_ps1 &>/dev/null && __git_ps1 " (%s)")\033[0m\]
+    #'
+    #export GIT_PS1_SHOWDIRTYSTATE="enabled"
+    #export GIT_PS1_SHOWSTASHSTATE="enabled"
+    #export GIT_PS1_SHOWUNTRACKEDFILES="enabled"
+    #export GIT_PS1_SHOWUPSTREAM="auto verbose name git"
+    export GIT_PS1_SHOWCOLORHINTS="enabled"
+    PROMPT_COMMAND='__git_ps1 "\n\[\033]0;\u@\h:\w\007\033[31m\]\u@\h:\[\033[35m\W \033[31m[\D{%a%d@%H:%M} #\!]\033[0m\]" "\r\n"'
+    # better make sure git PS1 routine is available...
+    local git_prompt_loaded
+    local git_source_file_locations
+    local git_bindir_parent
+    local prompt_source_file
+    local completion_source_file
+    if type __git_ps1 >/dev/null 2>&1
+    then
+      git_prompt_loaded="true"
+    fi
+    # load git completion for bash (and git prompt if not already loaded)
+    git_source_file_locations=". $HOME/. $HOME/bin/ $my_prefix/ $my_prefix/bin/ $my_mach_dep_prefix/ $my_mach_dep_prefix/bin/"
+    if type -Pf git >/dev/null 2>&1
+    then
+        git_bindir_parent=$(dirname $(dirname $(type -Pf git)))
+        if [ "$git_bindir_parent" = "/" ]
+        then
+            git_bindir_parent=""
+        fi
+        git_source_file_locations="$git_bindir_parent/etc/ $git_bindir_parent/contrib/completion/ $git_source_file_locations"
+    fi
+    prompt_source_file="git-prompt.sh"
+    completion_source_file="git-completion.bash"
+    for d in $git_source_file_locations
+    do
+        if [ -r "$d$prompt_source_file" -a -r "$d$completion_source_file" ]
+        then
+            if [ -z "$git_prompt_loaded" ]
+            then
+                . "$d$prompt_source_file"
+            fi
+            . "$d$completion_source_file"
+            break
+        fi
+    done
+    # some useful aliases, based on other's work... ;^)
+    
+}
+if type git >/dev/null 2>&1
+then
+  setup_for_git
+fi
+# END added by Bruce 2014/07/28
+
+# following lines added by Bruce 2013/08/02 (MWP PC path setup, etc.)
+append_to_path "/c/Program Files (x86)/Vim/vim74"
+#alias vi=gvim ...vi can now work; e.g., git-bash - commented out 2017/05/19
+# END added by Bruce 2013/06/07
