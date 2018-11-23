@@ -64,7 +64,7 @@ unset __BASH_LOCAL_
 setup_for_git ()
 {
     export GIT_PS1_SHOWCOLORHINTS="enabled"
-    PROMPT_COMMAND='__git_ps1 "\n\[\033]0;\u@\h:\w\007\033[31m\]\u@\h:\[\033[35m\W \033[31m[\D{%a%d@%H:%M} #\!]\033[0m\]" "\r\n"'
+    PROMPT_COMMAND='__git_ps1 "\n\[\033]0;\u@\h:\w\007\033[31m\]\u@\h:\[\033[35m\w \033[31m[\D{%a%d@%H:%M} #\!]\033[0m\]" "\r\n"'
     # better make sure git PS1 routine is available...
     local git_prompt_loaded
     local git_source_file_locations
