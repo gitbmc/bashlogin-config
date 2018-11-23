@@ -51,15 +51,15 @@ shopt -s histverify
 shopt -s no_empty_cmd_completion
 
 # read local setup (if it exists and is readable)
-__LOCALSHRC_=${LOCALSHRC:-.localshrc}
-if [ -r "/$__LOCALSHRC_" ]
+__BASH_LOCAL_=${BASH_LOCAL:-.bash_local}
+if [ -r "/$__BASH_LOCAL_" ]
 then
-  . "/$__LOCALSHRC_"
-elif [ -r "$HOME/$__LOCALSHRC_" ]
+  . "/$__BASH_LOCAL_"
+elif [ -r "$HOME/$__BASH_LOCAL_" ]
 then
-  . "$HOME/$__LOCALSHRC_"
+  . "$HOME/$__BASH_LOCAL_"
 fi
-unset __LOCALSHRC_
+unset __BASH_LOCAL_
 
 setup_for_git ()
 {
