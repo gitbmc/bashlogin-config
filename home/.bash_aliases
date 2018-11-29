@@ -6,7 +6,9 @@ cl () { cd "$@" && ls ; }
 cll () { cd "$@" && ls -l ; }
 f () { find . -name "$@" -print ; }
 alias ec='emacsclient'
-alias ew='emacsclientw'
+ej () { emacsclient -cqe '(direx:jump-to-directory-with-context "'$1'" "'$2'")' > /dev/null ; }
+em () { emacs $@ ; }
+emj () { emacs --eval '(direx:jump-to-directory-with-context "'$1'" "'$2'")'  ; }
 alias h='history'
 alias hg='h | grep'
 alias j='jobs -l'
