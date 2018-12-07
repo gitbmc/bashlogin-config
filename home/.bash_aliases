@@ -69,7 +69,7 @@ setup_for_git ()
     export GIT_PS1_SHOWDIRTYSTATE="true"
     export GIT_PS1_SHOWSTASHSTATE="true"
     export GIT_PS1_SHOWUNTRACKEDFILES="true"
-    export GIT_PS1_SHOWUPSTREAM="auto verbose git"
+    export GIT_PS1_SHOWUPSTREAM="auto"
     PROMPT_COMMAND='__git_ps1 "\n\[\033]0;\u@\h:\w\007\033[31m\]\u@\h:\[\033[35m\w \033[31m[\D{%a%d@%H:%M} #\!]\033[0m\]" "\r\n"'
     # better make sure git PS1 routine is available...
     local git_prompt_loaded
