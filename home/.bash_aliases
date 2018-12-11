@@ -40,7 +40,16 @@ xtitle () { echo -ne "\033]0;$@\007" ; }
 
 # other misc. config/settings
 
-umask 022 # WSL Ubuntu 18.04 seems to neglect setting a non-zero value for this
+# WSL work-arounds (as of Ubuntu 18.04)
+if [ `umask` -eq 0 ]
+then
+    umask 022
+fi
+if ! [ -w "/run/screen" ]
+then
+    export SCREENDIR=$HOME/.screen
+fi
+# END WSL work-arounds
 
 FIGNORE='.o:~'
 GLOBIGNORE='~'
