@@ -126,4 +126,5 @@ if [ -r ~/.homesick/repos/homeshick/homeshick.sh ]
 then
     . ~/.homesick/repos/homeshick/homeshick.sh
     . ~/.homesick/repos/homeshick/completions/homeshick-completion.bash
+    homeshick --quiet refresh
 fi
