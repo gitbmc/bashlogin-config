@@ -126,5 +126,13 @@ if [ -r ~/.homesick/repos/homeshick/homeshick.sh ]
 then
     . ~/.homesick/repos/homeshick/homeshick.sh
     . ~/.homesick/repos/homeshick/completions/homeshick-completion.bash
-    homeshick --quiet refresh
+    if [ "$DISPLAY" ]
+    then
+        if ! homeshick --quiet --batch refresh 0
+        then
+            xmessage "Homeshick refresh: check for updates..."
+        fi
+    else
+        homeshick --quiet refresh
+    fi
 fi
