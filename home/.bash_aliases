@@ -128,7 +128,7 @@ then
     . ~/.homesick/repos/homeshick/completions/homeshick-completion.bash
     if [ "$DISPLAY" ]
     then
-        if ! homeshick --quiet --batch refresh 0
+        if ! homeshick --quiet --batch refresh
         then
             xmessage "Homeshick refresh: check for updates..."
         fi
