@@ -53,8 +53,19 @@ fi
 
 FIGNORE='.o:~'
 GLOBIGNORE='~'
-PS1="\[\033]0;\u@\h:\w\007\033[31m\]\u@\h:\[\033[35m\w \033[31m[\!]\033[0m\]
-"
+__MY_PROMPT_START_="\n\[\033]0;\u@\h:\w\007\033[31m\]\u@\h:\[\033[35m\w \033[31m[\D{%a%d@%H:%M} #\!]\033[0m\]"
+__MY_PROMPT_END_="\r\n"
+PS1="$__MY_PROMPT_START_$__MY_PROMPT_END_"
+PROMPT_COMMAND="check_one_time_prompt_message"
+
+check_one_time_prompt_message () {
+    if [ "$__one_time_prompt_message_" ]
+    then
+        echo
+        echo "$__one_time_prompt_message_"
+        unset __one_time_prompt_message_
+    fi
+}
 
 set -b
 shopt -s histreedit
@@ -79,7 +90,7 @@ setup_for_git ()
     export GIT_PS1_SHOWSTASHSTATE="true"
     export GIT_PS1_SHOWUNTRACKEDFILES="true"
     export GIT_PS1_SHOWUPSTREAM="auto"
-    PROMPT_COMMAND='__git_ps1 "\n\[\033]0;\u@\h:\w\007\033[31m\]\u@\h:\[\033[35m\w \033[31m[\D{%a%d@%H:%M} #\!]\033[0m\]" "\r\n"'
+    PROMPT_COMMAND="check_one_time_prompt_message;__git_ps1 \"$__MY_PROMPT_START_\" \"$__MY_PROMPT_END_\""
     # better make sure git PS1 routine is available...
     local git_prompt_loaded
     local git_source_file_locations
@@ -116,23 +127,32 @@ setup_for_git ()
         fi
     done
 }
+
 if type git >/dev/null 2>&1
 then
-  setup_for_git
+    setup_for_git
 fi
 
 # check for homeshick
-if [ -r ~/.homesick/repos/homeshick/homeshick.sh ]
+if [ -r ~/.homesick/repos/homeshick ]
 then
-    . ~/.homesick/repos/homeshick/homeshick.sh
-    . ~/.homesick/repos/homeshick/completions/homeshick-completion.bash
-    if [ "$DISPLAY" ]
+    if [ -r ~/.homesick/repos/homeshick/homeshick.sh ]
     then
-        if ! homeshick --quiet --batch refresh
+        . ~/.homesick/repos/homeshick/homeshick.sh
+    fi
+    if [ -r ~/.homesick/repos/homeshick/completions/homeshick-completion.bash ]
+    then
+        . ~/.homesick/repos/homeshick/completions/homeshick-completion.bash
+    fi
+    if ! homeshick --quiet --batch refresh
+    then
+        __homeshick_refresh_warning_="Homeshick refresh: check for updates..."
+        if [ "$DISPLAY" ] && type xmessage >/dev/null 2>&1
         then
-            xmessage "Homeshick refresh: check for updates..."
+            xmessage $__homeshick_refresh_warning_
+        else
+            __one_time_prompt_message_=$__homeshick_refresh_warning_
         fi
-    else
-        homeshick --quiet refresh
+        unset __homeshick_refresh_warning_
     fi
 fi
