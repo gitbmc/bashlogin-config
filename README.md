@@ -1,1 +1,1 @@
-# Bash shell-based login configuration (homeshick/homesick compatibla format).
+# Bash shell-based login configuration (homeshick/homesick compatible format).
